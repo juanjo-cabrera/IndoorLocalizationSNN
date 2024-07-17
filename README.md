@@ -16,22 +16,6 @@ The objective of this paper is to address the localization problem using omnidir
 
 ![Example Image](SiameseArquitecture.PNG)
 
-## Citation
-If you find this work useful, please consider citing:
-
-    @article{Cabrera2024SNNLocalization,
-      title={An experimental evaluation of Siamese Neural Networks for robot localization using omnidirectional imaging in indoor environments},
-      author={Juan José Cabrera and Vicente Román and Arturo Gil and Oscar Reinoso and Luis Payá},
-      journal={Artificial Intelligence Review},
-      volume={57},
-      number={198},
-      year={2024},
-      publisher={Springer Nature},
-      issn={1573-7462},
-      doi={10.1007/s10462-024-10840-0}
-    }
-
-
 ## Comparison with other methods
 
 | Global-Appearance Descriptor Technique | Cloudy Error | Night Error | Sunny Error |
@@ -50,3 +34,18 @@ localization. Artificial Intelligence Review 55 (4): 2847–2874
 Rostkowska, M. and P. Skrzypczy´nski. 2023. Optimizing appearance-based
 localization with catadioptric cameras: Small-footprint models for real-time
 inference on edge devices. Sensors 23 (14): 6485 
+
+## Citation
+If you find this work useful, please consider citing:
+
+    @article{Cabrera2024SNNLocalization,
+      title={An experimental evaluation of Siamese Neural Networks for robot localization using omnidirectional imaging in indoor environments},
+      author={Juan José Cabrera and Vicente Román and Arturo Gil and Oscar Reinoso and Luis Payá},
+      journal={Artificial Intelligence Review},
+      volume={57},
+      number={198},
+      year={2024},
+      publisher={Springer Nature},
+      issn={1573-7462},
+      doi={10.1007/s10462-024-10840-0}
+    }
