@@ -5,6 +5,10 @@
 **Publisher:** Springer  
 **ISSN:** 1573-7462  
 **DOI:** [10.1007/s10462-024-10840-0](https://link.springer.com/article/10.1007/s10462-024-10840-0)
+**ArXiv:** [2407.10536](https://arxiv.org/abs/2407.10536)
+**YouTube:** [link](https://www.youtube.com/watch?v=UaK0BJ_e06A)
+
+
 
 ## Introduction
 
