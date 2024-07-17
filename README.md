@@ -26,3 +26,23 @@ If you find this work useful, please consider citing:
       issn={1573-7462},
       doi={10.1007/s10462-024-10840-0}
     }
+
+
+## Comparison with other methods
+
+| Global-Appearance Descriptor Technique | Cloudy Error | Night Error | Sunny Error |
+|----------------------------------------|--------------|-------------|-------------|
+| Alexnet [Cebollada et al., 2022]       | 0.051 m      | 0.288 m     | 0.389 m     |
+| EfficientNet [Rostkowska et al., 2023] | 0.240 m      | 0.330 m     | 0.337 m     |
+| Siamese Network (ours)                 | 0.148 m      | 0.455 m     | 0.651 m     |
+| Siamese Network + DA (ours)            | 0.033 m      | 0.257 m     | 0.991 m     |
+| HOG [Cebollada et al., 2022]           | 0.163 m      | 0.451 m     | 0.820 m     |
+| gist [Cebollada et al., 2022]          | 0.052 m      | 1.065 m     | 0.884 m     |
+
+Cebollada, S., L. Pay ́a, X. Jiang, and O. Reinoso. 2022. Development and
+use of a convolutional neural network for hierarchical appearance-based
+localization. Artificial Intelligence Review 55 (4): 2847–2874 
+
+Rostkowska, M. and P. Skrzypczy ́nski. 2023. Optimizing appearance-based
+localization with catadioptric cameras: Small-footprint models for real-time
+inference on edge devices. Sensors 23 (14): 6485 
