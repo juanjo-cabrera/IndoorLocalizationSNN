@@ -39,7 +39,7 @@ If you find this work useful, please consider citing:
 | HOG [Cebollada et al., 2022]           | 0.163 m      | 0.451 m     | 0.820 m     |
 | gist [Cebollada et al., 2022]          | 0.052 m      | 1.065 m     | 0.884 m     |
 
-Cebollada, S., L. Pay ́a, X. Jiang, and O. Reinoso. 2022. Development and
+Cebollada, S., L. Payá, X. Jiang, and O. Reinoso. 2022. Development and
 use of a convolutional neural network for hierarchical appearance-based
 localization. Artificial Intelligence Review 55 (4): 2847–2874 
 
