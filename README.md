@@ -47,6 +47,6 @@ Cebollada, S., L. Payá, X. Jiang, and O. Reinoso. 2022. Development and
 use of a convolutional neural network for hierarchical appearance-based
 localization. Artificial Intelligence Review 55 (4): 2847–2874 
 
-Rostkowska, M. and P. Skrzypczy ́nski. 2023. Optimizing appearance-based
+Rostkowska, M. and P. Skrzypczy´nski. 2023. Optimizing appearance-based
 localization with catadioptric cameras: Small-footprint models for real-time
 inference on edge devices. Sensors 23 (14): 6485 
