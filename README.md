@@ -70,10 +70,7 @@ You can install the required packages using:
 
 ### Dataset
 
-This project uses the [COsy Localization Database (Freiburg)](https://www.cas.kth.se/COLD/cold-freiburg.html), which has been divided into training, validation, and test sets. Six data augmentation effects are individually applied to the training set. The dataset used in this research can be downloaded from: https://drive.google.com/drive/folders/1izX9LsE9f34q3cq2UbUEcneBxfFwPKh9?usp=sharing
-
-### Configuration:
-Adjust the dataset path (dataset_folder) and the training parameters in config/parameters.yaml as needed.
+This project uses the [COsy Localization Database (Freiburg)](https://www.cas.kth.se/COLD/cold-freiburg.html), which has been divided into training, validation, and test sets. Data augmentation effects are applied to the training set. The dataset used in this research can be downloaded from: https://drive.google.com/drive/folders/12E-afxHYv4cLmehXQvadeXviNjmvrfjI?usp=sharing) and the training parameters in config/parameters.yaml as needed.
     
     dataset_folder: '/home/arvc/Juanjo/Datasets/SiameseFriburgo/'
 
