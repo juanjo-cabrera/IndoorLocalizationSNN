@@ -1,5 +1,6 @@
 from torch import optim
 import torch
+from config import CONFIG
 
 def train(model, train_dataloader, model_name, criterion, device, max_epochs):
     optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
@@ -21,7 +22,7 @@ def train(model, train_dataloader, model_name, criterion, device, max_epochs):
             if i % 10 == 0:
                 print("Epoch number {}\n Current loss {}\n".format(epoch, loss_contrastive.item()))
 
-    torch.save(model, model_name)
+    torch.save(model, CONFIG.dataset_folder + 'models/' + model_name + '.pth')
 
 
 def trainV2(model, train_dataloader, model_name, criterion, device, max_epochs):

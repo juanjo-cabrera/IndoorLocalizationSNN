@@ -81,6 +81,32 @@ class FreiburgMap():
         error_localizacion = F.pairwise_distance(coor_test, coor_map.cuda())
         return error_localizacion.detach().cpu().numpy(), well_retrieved
 
+    def evaluate_recall_at1percent(self, test_img, coor_test, model):
+        test_vector = model(test_img)
+        map_vectors = self.load_whole_vectors()
+        map_vectors = list(torch.cat(map_vectors).detach().cpu().numpy())
+        map_coordinates = list(torch.vstack(self.map_coordinates).numpy())
+        descriptor_distances = []
+        coordinate_distances = []
+        well_retrieved = False
+        i = 0
+        # create a KDTRee with the map vectors
+        from sklearn.neighbors import KDTree
+        descriptors_tree = KDTree(map_vectors)
+        coordinates_tree = KDTree(map_coordinates)
+        # get the 1% of the map vectors
+        n = round(len(map_vectors)*0.01)
+        # retrieve the 1% nearest neighbors
+        descriptor_distances, descriptor_indices = descriptors_tree.query(test_vector.detach().cpu().numpy(), k=n)
+        # retrieve the 1% nearest coordinates
+        coor_distances, coor_indices = coordinates_tree.query(coor_test.detach().cpu().numpy(), k=1)
+        # check if the nearest neighbors are the same
+        if coor_indices in descriptor_indices:
+            well_retrieved = True
+            
+        return well_retrieved
+        
+
 def run():
     torch.multiprocessing.freeze_support()
     print('loop')

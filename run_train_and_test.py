@@ -1,10 +1,11 @@
 from datasets import *
 from training_module import train
-from testing_module import test
+from testing_module import test, test_recall_at1percent
 from models import *
 from loss import *
 import csv
-
+import os
+from config import CONFIG
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("Device is: ", device)
@@ -27,21 +28,32 @@ def run(model, model_name, train_dataloader, writer):
     torch.cuda.empty_cache()
     print('Start training of ' + model_name)
     train(model, train_dataloader, model_name, criterion, device, max_epochs=30)
-    test_model = torch.load(model_name).to(device)
-    mae_cloudy, varianza_cloudy, desv_cloudy, mse_cloudy, rmse_cloudy = test(test_model, map_data, test_dataloader_cloudy, device)
-    mae_night, varianza_night, desv_night, mse_night, rmse_night = test(test_model, map_data, test_dataloader_night, device)
-    mae_sunny, varianza_sunny, desv_sunny, mse_sunny, rmse_sunny = test(test_model, map_data, test_dataloader_sunny, device)
-    mae_global, var_global, desv_global, mse_global, rmse_global = all_errors2global(mae_cloudy, varianza_cloudy, desv_cloudy, mse_cloudy, rmse_cloudy, mae_night, varianza_night, desv_night, mse_night, rmse_night, mae_sunny, varianza_sunny, desv_sunny, mse_sunny, rmse_sunny)
-
-    writer.writerow([model_name, mae_cloudy, varianza_cloudy, desv_cloudy, mse_cloudy, rmse_cloudy, mae_night, varianza_night, desv_night, mse_night, rmse_night, mae_sunny, varianza_sunny, desv_sunny, mse_sunny, rmse_sunny, mae_global, var_global, desv_global, mse_global, rmse_global])
+    test_model = torch.load(CONFIG.dataset_folder + 'models/' + model_name + '.pth').to(device)
+    recall_cloudy = test_recall_at1percent(test_model, map_data, test_dataloader_cloudy, device)
+    recall_night = test_recall_at1percent(test_model, map_data, test_dataloader_night, device)
+    recall_sunny = test_recall_at1percent(test_model, map_data, test_dataloader_sunny, device)
+    recall = compute_global_error(recall_cloudy, recall_night, recall_sunny)
+    writer.writerow([model_name, recall_cloudy, recall_night, recall_sunny, recall])
 
 
 if __name__ == '__main__':
-    results = '/home/arvc/Juanjo/develop/IndoorLocalizationSNN/table14_resultsb.csv'
-    datasets = ['s20', 's30', 's40', 's60', 's70', 's80']
+    if not os.path.exists(CONFIG.dataset_folder + 'models/'):
+        os.makedirs(CONFIG.dataset_folder + 'models/')
+        print(f"Carpeta '{CONFIG.dataset_folder + 'models/'}' creada.")
+    else:
+        print(f"Carpeta '{CONFIG.dataset_folder + 'models/'}' ya existe.")
+
+    if not os.path.exists(CONFIG.dataset_folder + 'results/'):
+        os.makedirs(CONFIG.dataset_folder + 'results/')
+        print(f"Carpeta '{CONFIG.dataset_folder + 'results/'}' creada.")
+    else:
+        print(f"Carpeta '{CONFIG.dataset_folder + 'results/'}' ya existe.")
+
+    results = CONFIG.dataset_folder + 'results/results_recall.csv'
+    datasets = ['s20', 's30', 's40','s60', 's70', 's80']
     with open(results, 'w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(["Dataset", "MAE (m) Cloudy", 'Var. Cloudy', 'Desv. Cloudy','MSE Cloudy', 'RMSE Cloudy', "MAE  (m) Night", 'Var. Night', 'Desv. Night', 'MSE Night', 'RMSE Night',"MAE (m) Sunny", 'Var. Sunny', 'Desv. Sunny', 'MSE Sunny', 'RMSE Sunny', "MAE (m) global", 'Var. global', 'Desv. global', 'MSE global', 'RMSE global'])
+        writer.writerow(["Dataset", 'Recall@1% cloudy', 'Recall@1% night','Recall@1% sunny','Recall@1% Global'])
         for dataset_name in datasets:
             if dataset_name == 's20':
                 dataloader = baseline_dataloader_s20
@@ -61,7 +73,8 @@ if __name__ == '__main__':
             elif dataset_name == 's80':
                 dataloader = baseline_dataloader_s80
                 model = vgg16_500_500_5_s80.to(device)
+            else:
+                dataloader = baseline_dataloader
+                model = vgg16_500_500_5.to(device)
 
             run(model, dataset_name, dataloader, writer)
-
-

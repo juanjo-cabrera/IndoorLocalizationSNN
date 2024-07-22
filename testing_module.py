@@ -60,20 +60,47 @@ def test_recall(model, map_data, test_dataloader, device):
     return mae, varianza, desv, mse, rmse, recall
 
 
-# ruta = '/home/arvc/Juanjo/develop/IndoorLocalizationSNN'
-# models_names = ['net_pos61_epoch0', 'net_pos61_epoch5', 'net_pos61_epoch10', 'net_pos61_epoch15', 'net_pos61_epoch20', 'net_pos61_epoch25', 'net_pos61_epoch29']
-# # training_sequences_names = ['noDA', 'DA1', 'DA2', 'DA3', 'DA4', 'DA5', 'DA6']
-# results = ruta + '/net_pos61_resutls.csv'
-# # test_model = SiameseNetwork()
-# test_model = torch.load("net_pos61_epoch15").cuda()#Carga el modelo
-# #print(test_model)
-# with open(results, 'w', newline='') as file:
-#     writer = csv.writer(file)
-#     writer.writerow(["Dataset", "MAE (m) Cloudy", 'Var. Cloudy', 'Desv. Cloudy','MSE Cloudy', 'RMSE Cloudy', 'Recall Cloudy', "MAE  (m) Night", 'Var. Night', 'Desv. Night', 'MSE Night', 'RMSE Night', 'Recall Night',"MAE (m) Sunny", 'Var. Sunny', 'Desv. Sunny', 'MSE Sunny', 'RMSE Sunny', 'Recall Sunny',"MAE (m) global", 'Var. global', 'Desv. global', 'MSE global', 'RMSE global', 'Recall global'])
-#     for model_name in models_names:
-#         # test_model = torch.load(model_name)
-#         mae_cloudy, varianza_cloudy, desv_cloudy, mse_cloudy, rmse_cloudy, recall_cloudy = test_recall(net, map_data, test_dataloader_cloudy, device)
-#         mae_night, varianza_night, desv_night, mse_night, rmse_night, recall_night = test_recall(test_model, map_data, test_dataloader_night, device)
-#         mae_sunny, varianza_sunny, desv_sunny, mse_sunny, rmse_sunny, recall_sunny = test_recall(test_model, map_data, test_dataloader_sunny, device)
-#         mae_global, var_global, desv_global, mse_global, rmse_global, recall_global = all_errors2global(mae_cloudy, varianza_cloudy, desv_cloudy, mse_cloudy, rmse_cloudy, recall_cloudy, mae_night, varianza_night, desv_night, mse_night, rmse_night, recall_night, mae_sunny, varianza_sunny, desv_sunny, mse_sunny, rmse_sunny, recall_sunny)
-#         writer.writerow([model_name, mae_cloudy, varianza_cloudy, desv_cloudy, mse_cloudy, rmse_cloudy, recall_cloudy, mae_night, varianza_night, desv_night, mse_night, rmse_night, recall_night, mae_sunny, varianza_sunny, desv_sunny, mse_sunny, rmse_sunny, recall_sunny, mae_global, var_global, desv_global, mse_global, rmse_global, recall_global])
+def test_recall_5(model, map_data, test_dataloader, device):
+    model = model.cuda()
+    model.eval()
+    freiburg_map = FreiburgMap(map_data, model)
+    errors = []
+    tp = 0
+    total = 0
+    with torch.no_grad():
+        for data in test_dataloader:
+            if total%5 == 0:
+                test_img, test_coor = data[0].to(device), data[1].to(device)
+                error, well_retrieved = freiburg_map.evaluate_error_position_and_recall(test_img, test_coor, model)
+                errors.append(error)
+                if well_retrieved == True:
+                    tp += 1
+                total += 1
+
+    recall = (tp/total) * 100
+    mae, varianza, desv, mse, rmse = compute_errors(errors)
+    print('Mean Absolute Error in test images (m):', mae)
+    print('Varianza:', varianza)
+    print('Desviacion', desv)
+    print('Mean Square Error (m2)', mse)
+    print('Root Mean Square Error (m)', rmse)
+    return mae, varianza, desv, mse, rmse, recall
+
+def test_recall_at1percent(model, map_data, test_dataloader, device):
+    model = model.cuda()
+    model.eval()
+    freiburg_map = FreiburgMap(map_data, model)
+
+    tp = 0
+    total = 0
+    with torch.no_grad():
+        for data in test_dataloader:           
+            test_img, test_coor = data[0].to(device), data[1].to(device)
+            well_retrieved = freiburg_map.evaluate_recall_at1percent(test_img, test_coor, model)
+            if well_retrieved == True:
+                tp += 1
+            total += 1
+
+    recall = (tp/total) * 100
+    print('Recall at 1%:', recall)
+    return recall
