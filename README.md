@@ -49,3 +49,38 @@ If you find this work useful, please consider citing:
       issn={1573-7462},
       doi={10.1007/s10462-024-10840-0}
     }
+
+
+
+## Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed:
+- Python 3.8+
+- Torch
+- NumPy
+- Matplotlib
+
+You can install the required packages using:
+
+    pip install -r requirements.txt
+
+## Usage
+
+### Dataset
+
+This project uses the [COsy Localization Database (Freiburg)](https://www.cas.kth.se/COLD/cold-freiburg.html), which has been divided into training, validation, and test sets. Six data augmentation effects are individually applied to the training set. The dataset used in this research can be downloaded from: https://drive.google.com/drive/folders/1izX9LsE9f34q3cq2UbUEcneBxfFwPKh9?usp=sharing
+
+### Configuration:
+Adjust the dataset path (dataset_folder) and the training parameters in config/parameters.yaml as needed.
+    
+    dataset_folder: '/home/arvc/Juanjo/Datasets/SiameseFriburgo/'
+
+
+
+### Training and test:
+Run the training script:
+
+    python3 run_train_and_test.py
+
